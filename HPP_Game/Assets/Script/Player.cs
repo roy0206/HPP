@@ -9,9 +9,10 @@ public class Player : MonoBehaviour
     {
         public bool IsSit;
     }
-    
+
     //변수 선언
-    public float            MoveSpeed = 5f;
+
+    public float MoveSpeed = 5f;
     private Rigidbody2D     rb;
     public State PlayerState;
     private void Update()
@@ -22,7 +23,9 @@ public class Player : MonoBehaviour
         {
             Debug.Log("Is Sitting");
             PlayerState.IsSit = false;
+            MoveSpeed = 5f;
         }
+        PlayerStates();
 
     }
     private void FixedUpdate()
@@ -41,6 +44,14 @@ public class Player : MonoBehaviour
     public void SetSit(bool isSit)
     {
         PlayerState.IsSit = isSit;
+    }
+    void PlayerStates()
+    {
+        if(PlayerState.IsSit)
+        {
+            MoveSpeed = 3f;
+        }
+        
     }
     
 
