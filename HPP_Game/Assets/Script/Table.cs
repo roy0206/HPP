@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
-public class Obj : ObjSystem
-{ 
+public class Table : ObjSystem
+{
     
 
     private void Update()
@@ -17,7 +17,11 @@ public class Obj : ObjSystem
     {
         if(IsInRange && Input.GetKeyUp(KeyCode.F))
         {
-            Debug.Log("F downed");
+           Player player = FindObjectOfType<Player>();
+            if(player != null)
+            {
+                  player.SetSit(true);
+            }
         }
     }
     

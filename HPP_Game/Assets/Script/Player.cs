@@ -1,19 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class Player : MonoBehaviour
 {
+    public struct State // 플레이어 상태 구초체 선언
+    {
+        public bool IsSit;
+    }
     
+    //변수 선언
     public float            MoveSpeed = 5f;
     private Rigidbody2D     rb;
-    
-
+    public State PlayerState;
     private void Update()
     {
 
         Move();
-
+        if (Input.GetKeyDown(KeyCode.Space) && PlayerState.IsSit)
+        {
+            Debug.Log("Is Sitting");
+            PlayerState.IsSit = false;
+        }
 
     }
     private void FixedUpdate()
@@ -29,5 +38,10 @@ public class Player : MonoBehaviour
         transform.position += MoveSpeed * moveVector * Time.deltaTime;
 
     }
-    public void Is
+    public void SetSit(bool isSit)
+    {
+        PlayerState.IsSit = isSit;
+    }
+    
+
 }
