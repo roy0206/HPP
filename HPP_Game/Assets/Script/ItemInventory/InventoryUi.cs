@@ -11,7 +11,7 @@ public class InventoryUi : MonoBehaviour
 
     private void Awake()
     {
-        Inventory.Instance.InventoryUiUpdate += UpdateUi;
+
 
         inventoryDocument = GetComponent<UIDocument>();
         frame = inventoryDocument.rootVisualElement;
@@ -22,6 +22,10 @@ public class InventoryUi : MonoBehaviour
             frame.Q<VisualElement>("Slot3"),
             frame.Q<VisualElement>("Slot4")
         };
+    }
+    private void Start()
+    {
+        Inventory.Instance.InventoryUiUpdate += UpdateUi;
     }
 
     public void UpdateUi(Inventory inventory, params UiBehaviour[] behave)

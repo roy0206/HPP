@@ -17,7 +17,7 @@ public class Inventory : MonoBehaviour
     public delegate void InventoryUiUpdateCallback(Inventory ui, params UiBehaviour[] behave);
     public event InventoryUiUpdateCallback InventoryUiUpdate;
 
-    private List<Node> inventory = new List<Node>(4);
+    private List<Node> inventory;
     public List<Node> InventoryList => inventory;
 
     private Node selectedNode;
@@ -28,6 +28,10 @@ public class Inventory : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        inventory = new List<Node>()
+        {
+            new Node(), new Node(), new Node(), new Node()
+        };
         selectedNode = inventory[0];
 
     }

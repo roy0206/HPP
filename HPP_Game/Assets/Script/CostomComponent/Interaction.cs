@@ -25,7 +25,7 @@ public class Interaction : MonoBehaviour
     [SerializeField] List<(UnityAction, KeyCode, string, int, float)> interactions = new();
     [SerializeField] UIDocument interactionUiFile;
 
-    Player player;
+    _Player player;
     VisualElement feedbackUi;
     Label text;
 
@@ -45,7 +45,7 @@ public class Interaction : MonoBehaviour
 
     void Start()
     {
-        player = GameObject.FindWithTag("Player").GetComponent<Player>();
+        player = GameObject.FindWithTag("Player").GetComponent<_Player>();
         feedbackUi = interactionUiFile.rootVisualElement.Q<VisualElement>("Frame");
         text = feedbackUi.Q<Label>("Text");
 
