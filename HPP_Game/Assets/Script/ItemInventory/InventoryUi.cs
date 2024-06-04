@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -28,13 +29,13 @@ public class InventoryUi : MonoBehaviour
         Inventory.Instance.InventoryUiUpdate += UpdateUi;
     }
 
-    public void UpdateUi(Inventory inventory, params UiBehaviour[] behave)
+    public void UpdateUi(Inventory inventory)
     {
         for (int i = 0; i < slots.Length; i++)
         {
             var currentSlot = slots[i];
 
-            if (inventory.InventoryList[i] == null)
+            if (inventory.InventoryList[i].item == null)
                 currentSlot.style.backgroundImage = null;
             else
             {
@@ -42,7 +43,7 @@ public class InventoryUi : MonoBehaviour
             }
 
 
-            Color newColor = currentSlot.style.borderTopColor.value;
+            Color newColor = new Color(255,255,0);
             newColor.a = (inventory.SelectNode == inventory.InventoryList[i])? 1 : 0;
 
             currentSlot.style.borderTopColor

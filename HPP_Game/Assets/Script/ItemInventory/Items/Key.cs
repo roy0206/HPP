@@ -8,7 +8,21 @@ public class Key : Item
     {
         itemName = "Key";
         description = "Key to open iron door";
-        image = Resources.Load("Assets/Resourses/Texture/TextTexture.png") as Texture2D;
+        image = Resources.Load<Texture2D>("Texture/Key");
+    }
+
+    public override void OnEquipped()
+    {
+        base.OnEquipped();
+
+        Debug.Log("Key has equipped");
+    }
+
+    public override void OnUnEquipped()
+    {
+        base.OnUnEquipped();
+
+        Debug.Log("Key has unequipped");
     }
 
     private int keyNum;

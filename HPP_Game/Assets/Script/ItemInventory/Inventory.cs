@@ -3,18 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public enum UiBehaviour
-{
-    Full,
-    ChangeSelectNode,
-    AddItem,
-}
-
 public class Inventory : MonoBehaviour
 {
     public static Inventory Instance;
 
-    public delegate void InventoryUiUpdateCallback(Inventory ui, params UiBehaviour[] behave);
+    public delegate void InventoryUiUpdateCallback(Inventory ui);
     public event InventoryUiUpdateCallback InventoryUiUpdate;
 
     private List<Node> inventory;
@@ -35,6 +28,10 @@ public class Inventory : MonoBehaviour
         selectedNode = inventory[0];
 
     }
+    private void Start()
+    {
+        AddItem(new Key());
+    }
 
     public Item FindItem(System.Type type)
     {
@@ -52,46 +49,42 @@ public class Inventory : MonoBehaviour
             if (inventory[i].item == null)
             {
                 inventory[i].item = item;
-                InventoryUiUpdate.Invoke(this, UiBehaviour.AddItem);
+                InventoryUiUpdate.Invoke(this);
                 return;
             }
         }
 
-        InventoryUiUpdate.Invoke(this, UiBehaviour.Full);
+        InventoryUiUpdate.Invoke(this);
     }
 
+    KeyCode[] keys = new KeyCode[4]
+    {
+        KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4
+    };
 
     private void ManageInput()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        for (int i = 0; i < keys.Length; i++)
         {
-            selectedNode = inventory[0];
-            InventoryUiUpdate.Invoke(this, UiBehaviour.ChangeSelectNode);
-        }
+            KeyCode key = keys[i];
+            if (Input.GetKeyDown(key))
+            {
+                if (selectedNode != inventory[i])
+                {
+                    selectedNode.item?.OnUnEquipped();
+                    selectedNode = inventory[i];
+                    selectedNode.item?.OnEquipped();
+                }
 
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            selectedNode = inventory[1];
-            InventoryUiUpdate.Invoke(this, UiBehaviour.ChangeSelectNode);
+                InventoryUiUpdate.Invoke(this);
+                break;
+            }
         }
-
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            selectedNode = inventory[2];
-            InventoryUiUpdate.Invoke(this, UiBehaviour.ChangeSelectNode);
-        }
-
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            selectedNode = inventory[3];
-            InventoryUiUpdate.Invoke(this, UiBehaviour.ChangeSelectNode);
-        }
-
     }
 
     private void Update()
     {
-        
+        ManageInput();
     }
 
 }
