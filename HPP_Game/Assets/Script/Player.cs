@@ -29,7 +29,7 @@ public class Player : MonoBehaviour
         {
             Debug.Log("Is Sitting");
             PlayerState.IsSit = false;
-            MoveSpeed = 5f;
+            MoveSpeed = 300f;
         }
         PlayerStates();
 
@@ -64,7 +64,7 @@ public class Player : MonoBehaviour
     {
         if(PlayerState.IsSit)
         {
-            MoveSpeed = 3f;
+            MoveSpeed = 150f;
         }
         
     }
