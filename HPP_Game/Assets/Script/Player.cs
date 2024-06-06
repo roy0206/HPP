@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Playables;
 
@@ -13,12 +14,17 @@ public class Player : MonoBehaviour
     //변수 선언
 
     public float MoveSpeed = 5f;
-    private Rigidbody2D     rb;
+    private Rigidbody2D rb;
     public State PlayerState;
+    private Animator myAnim;
+
+
+
+
     private void Update()
     {
 
-        Move();
+        
         if (Input.GetKeyDown(KeyCode.Space) && PlayerState.IsSit)
         {
             Debug.Log("Is Sitting");
@@ -28,17 +34,26 @@ public class Player : MonoBehaviour
         PlayerStates();
 
     }
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        myAnim = GetComponent<Animator>();
+    }
     private void FixedUpdate()
     {
-        
+        Move();
+        MoveAnim();
     }
 
     private void Move()
     {
-        float hor = Input.GetAxisRaw("Horizontal");
+
+        rb.velocity = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized * Time.deltaTime * MoveSpeed ; 
+        /*float hor = Input.GetAxisRaw("Horizontal");
         float var = Input.GetAxisRaw("Vertical");
         Vector3 moveVector = new Vector3(hor, var).normalized;
         transform.position += MoveSpeed * moveVector * Time.deltaTime;
+        Debug.Log(rb.velocity);*/
 
     }
     public void SetSit(bool isSit)
@@ -52,6 +67,17 @@ public class Player : MonoBehaviour
             MoveSpeed = 3f;
         }
         
+    }
+
+    public void MoveAnim()
+    {
+        myAnim.SetFloat("moveX", rb.velocity.x);
+        myAnim.SetFloat("moveY",rb.velocity.y);
+        if(Input.GetAxisRaw("Horizontal") == 1 | Input.GetAxisRaw("Horizontal") == -1 || Input.GetAxisRaw("Vertical") == 1 || Input.GetAxisRaw("Vertical") == -1)
+        {
+            myAnim.SetFloat("LastX", Input.GetAxisRaw("Horizontal"));
+            myAnim.SetFloat("LastY", Input.GetAxisRaw("Vertical"));
+        }
     }
     
 
