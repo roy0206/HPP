@@ -14,17 +14,18 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
     private Animator myAnim;
     public PlayerState PlayerStates = new PlayerState();
+    private Table table;
 
 
 
 
     private void Update()
     {
-        
+        SetIsSit();
+
 
         if (Input.GetKeyDown(KeyCode.Space) && PlayerStates.IsSit)
         {
-            Debug.Log("Is Sitting");
             PlayerStates.IsSit = false;
             MoveSpeed = 300f;
         }
@@ -33,7 +34,7 @@ public class Player : MonoBehaviour
     }
     private void Start()
     {
-        PlayerStates = FindObjectOfType<PlayerState>();
+        table = FindObjectOfType<Table>();
         rb = GetComponent<Rigidbody2D>();
         myAnim = GetComponent<Animator>();
     }
@@ -41,6 +42,7 @@ public class Player : MonoBehaviour
     {
         Move();
         MoveAnim();
+        
     }
 
     private void Move()
@@ -61,7 +63,13 @@ public class Player : MonoBehaviour
     }
     public void SetIsSit()
     {
+        if(PlayerStates.IsSit == true)
+        {
+            MoveSpeed = 0f;
+            transform.position = table.transform.position;
+        }
 
+          
     }
     
 

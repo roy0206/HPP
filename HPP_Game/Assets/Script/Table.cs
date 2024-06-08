@@ -8,6 +8,12 @@ public class Table : ObjSystem
 {
 
     private Player player;
+
+
+    private void Start()
+    {
+        
+    }
     private void Update()
     {
         InRange();
@@ -21,6 +27,6 @@ public class Table : ObjSystem
             player.SetSit();
         }
     }
-    
-    
+
+
 }
