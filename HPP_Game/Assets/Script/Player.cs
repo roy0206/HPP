@@ -6,36 +6,34 @@ using UnityEngine.Playables;
 
 public class Player : MonoBehaviour
 {
-    public struct State // 플레이어 상태 구초체 선언
-    {
-        public bool IsSit;
-    }
+    
 
     //변수 선언
 
     public float MoveSpeed = 5f;
     private Rigidbody2D rb;
-    public State PlayerState;
     private Animator myAnim;
+    public PlayerState PlayerStates = new PlayerState();
 
 
 
 
     private void Update()
     {
-
         
-        if (Input.GetKeyDown(KeyCode.Space) && PlayerState.IsSit)
+
+        if (Input.GetKeyDown(KeyCode.Space) && PlayerStates.IsSit)
         {
             Debug.Log("Is Sitting");
-            PlayerState.IsSit = false;
+            PlayerStates.IsSit = false;
             MoveSpeed = 300f;
         }
-        PlayerStates();
+        
 
     }
     private void Start()
     {
+        PlayerStates = FindObjectOfType<PlayerState>();
         rb = GetComponent<Rigidbody2D>();
         myAnim = GetComponent<Animator>();
     }
@@ -56,18 +54,16 @@ public class Player : MonoBehaviour
         Debug.Log(rb.velocity);*/
 
     }
-    public void SetSit(bool isSit)
+    public void SetSit()
     {
-        PlayerState.IsSit = isSit;
+       PlayerStates.IsSit = true;
+
     }
-    void PlayerStates()
+    public void SetIsSit()
     {
-        if(PlayerState.IsSit)
-        {
-            MoveSpeed = 150f;
-        }
-        
+
     }
+    
 
     public void MoveAnim()
     {

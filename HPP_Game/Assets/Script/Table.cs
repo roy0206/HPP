@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 public class Table : ObjSystem
 {
-    
 
+    private Player player;
     private void Update()
     {
         InRange();
@@ -17,11 +17,8 @@ public class Table : ObjSystem
     {
         if(IsInRange && Input.GetKeyUp(KeyCode.F))
         {
-           Player player = FindObjectOfType<Player>();
-            if(player != null)
-            {
-                  player.SetSit(true);
-            }
+            player = FindObjectOfType<Player>();
+            player.SetSit();
         }
     }
     
