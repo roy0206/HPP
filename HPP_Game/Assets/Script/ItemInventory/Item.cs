@@ -11,6 +11,11 @@ public abstract class Item
 
     public virtual void OnEquipped()
     {
+        
+    }
+
+    public virtual void OnUpdated()
+    {
 
     }
 
@@ -18,9 +23,4 @@ public abstract class Item
     {
 
     }
-
-
-    
-
-
 }

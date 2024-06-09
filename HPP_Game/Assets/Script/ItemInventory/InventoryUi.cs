@@ -9,6 +9,8 @@ public class InventoryUi : MonoBehaviour
     private UIDocument inventoryDocument;
     private VisualElement frame;
     private VisualElement[] slots;
+    private Label title;
+    private Label description;
 
     private void Awake()
     {
@@ -16,6 +18,12 @@ public class InventoryUi : MonoBehaviour
 
         inventoryDocument = GetComponent<UIDocument>();
         frame = inventoryDocument.rootVisualElement;
+        title = frame.parent.Q<Label>("Title");
+        description = frame.parent.Q<Label>("Description");
+
+        title.style.display = DisplayStyle.None;
+        description.style.display = DisplayStyle.None;
+
         slots = new VisualElement[4]
         {
             frame.Q<VisualElement>("Slot1"),
@@ -23,6 +31,7 @@ public class InventoryUi : MonoBehaviour
             frame.Q<VisualElement>("Slot3"),
             frame.Q<VisualElement>("Slot4")
         };
+        print(frame);
     }
     private void Start()
     {
@@ -53,5 +62,50 @@ public class InventoryUi : MonoBehaviour
                 = newColor;
 
         }
+        if (inventory.isGetInput)
+        {
+            StopAllCoroutines();
+            title.style.display = DisplayStyle.None;
+            description.style.display = DisplayStyle.None;
+            if (inventory.SelectNode.item != null) 
+                StartCoroutine(FadeText(inventory.SelectNode.item.itemName, inventory.SelectNode.item.description));
+        }
+        
+    }
+
+    IEnumerator FadeText(string s1, string s2)
+    {
+        title.style.display = DisplayStyle.Flex;
+        description.style.display = DisplayStyle.Flex;
+
+        title.text = s1;
+        description.text = s2;
+
+        Color newColor = new Color(0, 0, 0, 0);
+        title.style.color = newColor;
+        description.style.color = newColor;
+
+        for(int i = 0; i < 10; i++)
+        {
+            yield return new WaitForSeconds(0.1f);
+            newColor = title.style.color.value;
+            newColor.a += 0.1f;
+            title.style.color = newColor;
+            description.style.color = newColor;
+        }
+
+        yield return new WaitForSeconds(2);
+
+        for (int i = 0; i < 10; i++)
+        {
+            yield return new WaitForSeconds(0.1f);
+            newColor = title.style.color.value;
+            newColor.a -= 0.1f;
+            title.style.color = newColor;
+            description.style.color = newColor;
+        }
+
+        title.style.display = DisplayStyle.None;
+        description.style.display = DisplayStyle.None;
     }
 }

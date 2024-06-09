@@ -31,6 +31,7 @@ public class Inventory : MonoBehaviour
     private void Start()
     {
         AddItem(new Key());
+        AddItem(new TaserGun());
     }
 
     public Item FindItem(System.Type type)
@@ -62,13 +63,16 @@ public class Inventory : MonoBehaviour
         KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4
     };
 
+    public bool isGetInput = false;
     private void ManageInput()
     {
+        isGetInput = false;
         for (int i = 0; i < keys.Length; i++)
         {
             KeyCode key = keys[i];
             if (Input.GetKeyDown(key))
             {
+                isGetInput = true;
                 if (selectedNode != inventory[i])
                 {
                     selectedNode.item?.OnUnEquipped();
@@ -85,6 +89,7 @@ public class Inventory : MonoBehaviour
     private void Update()
     {
         ManageInput();
+        selectedNode.item.OnUpdated();
     }
 
 }
