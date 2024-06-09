@@ -42,18 +42,20 @@ public class Player : MonoBehaviour
     {
         Move();
         MoveAnim();
+       
+
         
     }
 
     private void Move()
     {
 
-        rb.velocity = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized * Time.deltaTime * MoveSpeed ; 
-        /*float hor = Input.GetAxisRaw("Horizontal");
-        float var = Input.GetAxisRaw("Vertical");
-        Vector3 moveVector = new Vector3(hor, var).normalized;
-        transform.position += MoveSpeed * moveVector * Time.deltaTime;
-        Debug.Log(rb.velocity);*/
+        rb.velocity = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized * Time.deltaTime * MoveSpeed ;
+        //float hor = input.getaxisraw("horizontal");
+        //float var = input.getaxisraw("vertical");
+        //vector3 movevector = new vector3(hor, var).normalized;
+        //transform.position += movespeed * movevector * time.deltatime;
+        //debug.log(rb.velocity);
 
     }
     public void SetSit()

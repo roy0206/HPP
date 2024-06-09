@@ -10,6 +10,7 @@ public class ObjSystem : MonoBehaviour
 
     private void Start()
     {
+        //PlayerPos = GameObject.Find("Player").GetComponent<Transform>();
     }
 
 
