@@ -8,37 +8,39 @@ public class Door : ObjSystem
 {
     GameObject player;
     private bool cnt = false;
+
+    Interaction interaction;
     private void Update()
     {
-        InRange();
-        interact();
+
     }
     private void Start()
     {
         player = GameObject.Find("Player");
-
+        interaction = GetComponent<Interaction>();
+        interaction.AddInteraction(Interact, KeyCode.F, "열기", int.MaxValue, 1);
     }
 
-    void interact()//interactions.Add((function, key, text, amount, hold));
+    void Interact()//interactions.Add((function, key, text, amount, hold));
     {
-        if (IsInRange && Input.GetKeyDown(KeyCode.F))
-        {
-            Quaternion currentRotation = transform.rotation;
+        Quaternion currentRotation = transform.rotation;
 
-            
-            if (cnt)
-            {
-                Quaternion newRotation = currentRotation * Quaternion.Euler(0, 0, -90);
-                transform.rotation = newRotation;
-                cnt = false;
-            }
-            else
-            {
-                Quaternion newRotation = currentRotation * Quaternion.Euler(0, 0, 90);
-                transform.rotation = newRotation;
-                cnt = true;
-            }
-            
+        interaction.RemoveAllInteraction();  
+        if (cnt)
+        {
+            Quaternion newRotation = currentRotation * Quaternion.Euler(0, 0, -90);
+            transform.rotation = newRotation;
+            cnt = false;
+
+            interaction.AddInteraction(Interact, KeyCode.F, "열기", int.MaxValue, 1);
+        }
+        else
+        {
+            Quaternion newRotation = currentRotation * Quaternion.Euler(0, 0, 90);
+            transform.rotation = newRotation;
+            cnt = true;
+
+            interaction.AddInteraction(Interact, KeyCode.F, "닫기", int.MaxValue, 1);
         }
     }
 }

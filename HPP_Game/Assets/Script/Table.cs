@@ -12,20 +12,16 @@ public class Table : ObjSystem
 
     private void Start()
     {
-        
+        GetComponent<Interaction>().AddInteraction(Interact, KeyCode.F, "¾É±â", int.MaxValue, 1);
     }
     private void Update()
     {
-        InRange();
-        Interact();
+
     }
     void Interact()
     {
-        if(IsInRange && Input.GetKeyUp(KeyCode.F))
-        {
-            player = FindObjectOfType<Player>();
-            player.SetSit();
-        }
+        player = FindObjectOfType<Player>();
+        player.SetSit();
     }
 
 

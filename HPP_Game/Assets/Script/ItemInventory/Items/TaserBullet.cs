@@ -13,8 +13,9 @@ public class TaserBullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.gameObject.tag == "Player") return;
         print("Hit");
-        if(collision.gameObject.tag == "Enemy")
+        if (collision.gameObject.tag == "Enemy")
         {
             ParticleSystem particle =
                 PoolManager.Instance.GetPool("TaserParticle", transform.position, Quaternion.identity).GetComponent<ParticleSystem>();

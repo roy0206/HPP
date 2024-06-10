@@ -32,11 +32,10 @@ public class InventoryUi : MonoBehaviour
             frame.Q<VisualElement>("Slot4")
         };
         print(frame);
-    }
-    private void Start()
-    {
+
         Inventory.Instance.InventoryUiUpdate += UpdateUi;
     }
+
 
     public void UpdateUi(Inventory inventory)
     {

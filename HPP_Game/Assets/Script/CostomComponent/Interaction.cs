@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.Events;
 using UnityEditor.ShaderKeywordFilter;
+using Unity.VisualScripting;
 
 [Serializable]
 public class InteractionComment
@@ -25,31 +26,40 @@ public class Interaction : MonoBehaviour
     [SerializeField] List<(UnityAction, KeyCode, string, int, float)> interactions = new();
     [SerializeField] UIDocument interactionUiFile;
 
-    _Player player;
+    Player player;
     VisualElement feedbackUi;
     Label text;
 
     public void AddInteraction(UnityAction function, KeyCode key, string text, int amount, float hold)
     {
         interactions.Add((function, key, text, amount, hold));
+        UpdateText();
     }
 
     public void RemoveInteraction(KeyCode removingKey)
     {
         interactions.Remove(interactions.Find(interaction => interaction.Item2 == removingKey));
+        UpdateText();
     }
     public void RemoveInteraction((UnityAction function, KeyCode key, string text, int amount, float hold) removingInteraction)
     {
         interactions.Remove(removingInteraction);
+        UpdateText();
+    }
+    public void RemoveAllInteraction()
+    {
+        interactions.Clear();
+        UpdateText();
     }
 
-    void Start()
+    void Awake()
     {
-        player = GameObject.FindWithTag("Player").GetComponent<_Player>();
+        Transform UiParent = GameObject.Find("UI").transform;
+        interactionUiFile = Instantiate(UiParent.Find("InteractionUi").gameObject, UiParent).GetComponent<UIDocument>();
+        player = GameObject.FindWithTag("Player").GetComponent<Player>();
         feedbackUi = interactionUiFile.rootVisualElement.Q<VisualElement>("Frame");
+        
         text = feedbackUi.Q<Label>("Text");
-
-        AddInteraction(TestFunc1, KeyCode.F, "UseItem", 2, 3);
 
         feedbackUi.style.display = DisplayStyle.None;
     }
@@ -77,12 +87,20 @@ public class Interaction : MonoBehaviour
     {
         feedbackUi.style.display = DisplayStyle.Flex;
 
+        UpdateText();
+    }
+
+    void UpdateText()
+    {
+        if (interactions.Count == 0) return;
         text.text = interactions[0].Item2.ToString() + " : " + interactions[0].Item3;
-        for(int i = 1; i < interactions.Count; i++)
+        for (int i = 1; i < interactions.Count; i++)
         {
             text.text += "\n" + interactions[i].Item2.ToString() + " : " + interactions[i].Item3;
         }
+
     }
+
     void UpdateUi()
     {
         if (feedbackUi.style.display == DisplayStyle.Flex) {
@@ -95,7 +113,7 @@ public class Interaction : MonoBehaviour
     public float holding = 0;
     void ManageInput()
     {
-        for (int i = 0; i < interactions.Count; i++)
+        for (int i = 0; i < interactions.Count && distance >= Vector2.Distance(player.transform.position, transform.position); i++)
         {
             if (Input.GetKeyDown(interactions[i].Item2)) holding = 0;
             else if (Input.GetKey(interactions[i].Item2) && holding != -1)
