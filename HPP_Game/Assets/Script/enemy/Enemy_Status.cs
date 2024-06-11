@@ -6,6 +6,7 @@ public class Enemy_Status : MonoBehaviour
 {
     // Start is called before the first frame update
     private GameManager gameManager;
+    public bool isIdle, isFollow, isAttack;
     
     void Start()
     {
