@@ -32,6 +32,7 @@ public class Inventory : MonoBehaviour
     {
         AddItem(new Key());
         AddItem(new TaserGun());
+        AddItem(new Flashlight());
     }
 
     public Item FindItem(System.Type type)
