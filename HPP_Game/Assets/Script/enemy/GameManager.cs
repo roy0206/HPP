@@ -32,7 +32,6 @@ public class GameManager : MonoBehaviour
     public GameObject enemy, player;
 
     public float AttackDist,DetectDist;
-
     private void Update()
     {
         startPos = new Vector2Int(Mathf.RoundToInt(enemy.transform.position.x), Mathf.RoundToInt(enemy.transform.position.y));
@@ -41,8 +40,30 @@ public class GameManager : MonoBehaviour
         //{
         //    PathFinding();
         //}
+        PathFinding();
+        StartCoroutine("FollowPlayer");
     }
+    public IEnumerator FollowPlayer()
+    {
+        FinalNodeList.RemoveAt(0);
+        foreach (Node targetNode in FinalNodeList)
+        {
+            Debug.Log(targetNode);
+            if ((new Vector2Int(Mathf.RoundToInt(enemy.transform.position.x), Mathf.RoundToInt(enemy.transform.position.y))) == new Vector2Int(targetNode.x, targetNode.y))
+            {
+                yield break;
+            }
 
+            Vector3 targetPosition = new Vector3(targetNode.x, targetNode.y, 0);
+            Vector3 direction = (targetPosition - enemy.transform.position).normalized;
+
+            while ((new Vector2Int(Mathf.RoundToInt(enemy.transform.position.x), Mathf.RoundToInt(enemy.transform.position.y))) != new Vector2Int(targetNode.x, targetNode.y))
+            {
+                enemy.transform.position = Vector3.MoveTowards(enemy.transform.position, targetPosition, 0.01f * Time.deltaTime);
+                yield return null;
+            }
+        }
+    }
     public void PathFinding()
     {
         // NodeArray의 크기 정해주고, isWall, x, y 대입

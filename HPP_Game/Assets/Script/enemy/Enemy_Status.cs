@@ -16,7 +16,7 @@ public class Enemy_Status : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Status((gameManager.player.transform.position - gameManager.enemy.transform.position).magnitude);
+        //Status((gameManager.player.transform.position - gameManager.enemy.transform.position).magnitude);
         if (isAttack)
         {
             AttackPlayer();
@@ -38,21 +38,23 @@ public class Enemy_Status : MonoBehaviour
     }
     private void EnemyIdle()
     {
-        //교도관이 지켜야할곳으로 이동
+        //교도관이 지켜야할곳으로 이동 targetPos 수정
         StopCoroutine("DelayFuntion");
     }
     private void FollowPlayer()
     {
         StartCoroutine("DelayFuntion", 0.2f);
+        //gameManager.MoveEnemyAlongPath();
     }
     private void AttackPlayer()
     {
         //StopCoroutine("DelayFuntion");
+        Time.timeScale = 0f;
     }
     private IEnumerator DelayFuntion()
     {
         gameManager.PathFinding();
-        print("1");
+        //print("1");
         yield return null;
     }
 }
