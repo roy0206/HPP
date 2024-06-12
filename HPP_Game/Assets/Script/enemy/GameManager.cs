@@ -30,16 +30,17 @@ public class GameManager : MonoBehaviour
     List<Node> OpenList, ClosedList;
 
     public GameObject enemy, player;
-    public float DetectDist;
+
+    public float AttackDist,DetectDist;
 
     private void Update()
     {
         startPos = new Vector2Int(Mathf.RoundToInt(enemy.transform.position.x), Mathf.RoundToInt(enemy.transform.position.y));
         targetPos = new Vector2Int(Mathf.RoundToInt(player.transform.position.x), Mathf.RoundToInt(player.transform.position.y));
-        if ((player.transform.position - enemy.transform.position).magnitude <= DetectDist)
-        {
-            PathFinding();
-        }
+        //if ((player.transform.position - enemy.transform.position).magnitude <= DetectDist)
+        //{
+        //    PathFinding();
+        //}
     }
 
     public void PathFinding()
@@ -94,7 +95,7 @@ public class GameManager : MonoBehaviour
                 FinalNodeList.Add(StartNode);
                 FinalNodeList.Reverse();
 
-                for (int i = 0; i < FinalNodeList.Count; i++) print(i + "번째는 " + FinalNodeList[i].x + ", " + FinalNodeList[i].y);
+                //for (int i = 0; i < FinalNodeList.Count; i++) print(i + "번째는 " + FinalNodeList[i].x + ", " + FinalNodeList[i].y);
                 return;
             }
 
