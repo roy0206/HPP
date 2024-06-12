@@ -6,7 +6,7 @@ using UnityEngine.UIElements.Experimental;
 public class PlayerState
 {
    public bool IsSit = false;
-   public bool PlayerDie = true;
+   public bool PlayerDie = false;
 
 
     
