@@ -32,6 +32,11 @@ public class GameManager : MonoBehaviour
     public GameObject enemy, player;
 
     public float AttackDist,DetectDist;
+    private void Start()
+    {
+        FinalNodeList = PathFinding();
+        StartCoroutine("FollowPlayer");
+    }
     private void Update()
     {
         startPos = new Vector2Int(Mathf.RoundToInt(enemy.transform.position.x), Mathf.RoundToInt(enemy.transform.position.y));
@@ -40,31 +45,49 @@ public class GameManager : MonoBehaviour
         //{
         //    PathFinding();
         //}
-        PathFinding();
-        StartCoroutine("FollowPlayer");
+        //StartCoroutine("FollowPlayer");
     }
     public IEnumerator FollowPlayer()
     {
-        FinalNodeList.RemoveAt(0);
-        foreach (Node targetNode in FinalNodeList)
+        while ((player.transform.position - enemy.transform.position).magnitude > 1.5f)
         {
-            Debug.Log(targetNode);
-            if ((new Vector2Int(Mathf.RoundToInt(enemy.transform.position.x), Mathf.RoundToInt(enemy.transform.position.y))) == new Vector2Int(targetNode.x, targetNode.y))
+            List<Node> tempList = PathFinding();
+
+            if (!IsSamePath(FinalNodeList, tempList))
             {
+                FinalNodeList = tempList;
+                StartCoroutine(FollowPlayer());
                 yield break;
             }
 
-            Vector3 targetPosition = new Vector3(targetNode.x, targetNode.y, 0);
-            Vector3 direction = (targetPosition - enemy.transform.position).normalized;
-
-            while ((new Vector2Int(Mathf.RoundToInt(enemy.transform.position.x), Mathf.RoundToInt(enemy.transform.position.y))) != new Vector2Int(targetNode.x, targetNode.y))
+            FinalNodeList.RemoveAt(0);
+            foreach (Node targetNode in FinalNodeList)
             {
-                enemy.transform.position = Vector3.MoveTowards(enemy.transform.position, targetPosition, 0.01f * Time.deltaTime);
-                yield return null;
+                if (Mathf.RoundToInt(enemy.transform.position.x) == targetNode.x &&Mathf.RoundToInt(enemy.transform.position.y) == targetNode.y)
+                {
+                    yield break;
+                }
+                Vector3 targetPosition = new Vector3(targetNode.x, targetNode.y, 0);
+                while (Vector3.Distance(enemy.transform.position, targetPosition) > 0.01f)
+                {
+                    enemy.transform.position = Vector3.MoveTowards(enemy.transform.position, targetPosition, 0.5f * Time.deltaTime);
+                    yield return null;
+                }
             }
         }
     }
-    public void PathFinding()
+    private bool IsSamePath(List<Node> path1, List<Node> path2)
+    {
+        if (path1.Count != path2.Count)
+            return false;
+        for (int i = 0; i < path1.Count; i++)
+        {
+            if (path1[i] != path2[i])
+                return false;
+        }
+        return true;
+    }
+    public List<Node> PathFinding()
     {
         // NodeArray의 크기 정해주고, isWall, x, y 대입
         sizeX = topRight.x - bottomLeft.x + 1;
@@ -90,7 +113,7 @@ public class GameManager : MonoBehaviour
 
         OpenList = new List<Node>() { StartNode };
         ClosedList = new List<Node>();
-        FinalNodeList = new List<Node>();
+        var FinalNodeList = new List<Node>();
 
         
         while (OpenList.Count > 0)
@@ -117,7 +140,7 @@ public class GameManager : MonoBehaviour
                 FinalNodeList.Reverse();
 
                 //for (int i = 0; i < FinalNodeList.Count; i++) print(i + "번째는 " + FinalNodeList[i].x + ", " + FinalNodeList[i].y);
-                return;
+                return FinalNodeList;
             }
 
 
@@ -136,6 +159,7 @@ public class GameManager : MonoBehaviour
             OpenListAdd(CurNode.x, CurNode.y - 1);
             OpenListAdd(CurNode.x - 1, CurNode.y);
         }
+        return FinalNodeList;
     }
 
     void OpenListAdd(int checkX, int checkY)
