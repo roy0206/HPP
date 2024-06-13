@@ -44,10 +44,10 @@ public class InventoryUi : MonoBehaviour
             var currentSlot = slots[i];
 
             if (inventory.InventoryList[i].item == null)
-                currentSlot.style.backgroundImage = null;
+                currentSlot.Q<VisualElement>("Image").style.backgroundImage = null;
             else
             {
-                currentSlot.style.backgroundImage = inventory.InventoryList[i].item.image;
+                currentSlot.Q<VisualElement>("Image").style.backgroundImage = inventory.InventoryList[i].item.image;
             }
 
 

@@ -14,14 +14,14 @@ public class SoundManager : MonoBehaviour
     {
         Instance = this;
 
-        var loadedSound = Resources.LoadAll<AudioClip>("");
+        var loadedSound = Resources.LoadAll<AudioClip>("AudioSources");
         foreach (var sound in loadedSound)
         {
             sounds.Add(sound.name, sound);
         }
     }
 
-    public void PlaySound(GameObject subject, string soundName, float time, bool loop )
+    public void PlaySound(GameObject subject, string soundName, bool loop )
     {
         AudioSource[] source = subject.GetComponents<AudioSource>();
         AudioSource availableSource = null;
@@ -60,7 +60,7 @@ public class SoundManager : MonoBehaviour
 
     void Start()
     {
-        PlaySound(GameObject.Find("Player"), "TaserGun", 1, false);
+/*        PlaySound(GameObject.Find("Player"), "TaserGun", false);*/
     }
 
     void Update()

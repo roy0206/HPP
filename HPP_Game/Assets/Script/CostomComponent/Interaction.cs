@@ -104,9 +104,9 @@ public class Interaction : MonoBehaviour
     void UpdateUi()
     {
         if (feedbackUi.style.display == DisplayStyle.Flex) {
-            Vector3 worldPos = Camera.main.WorldToScreenPoint(transform.position) * (1080 / Screen.height);
+            Vector3 worldPos = Camera.main.WorldToScreenPoint(transform.position) * (1080f / Screen.height);
             feedbackUi.style.left = worldPos.x - (feedbackUi.layout.width / 2);
-            feedbackUi.style.top = (1080 - worldPos.y);
+            feedbackUi.style.top = (1080f - worldPos.y);
         }
     }
 

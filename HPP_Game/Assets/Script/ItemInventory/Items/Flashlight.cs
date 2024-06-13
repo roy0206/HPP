@@ -12,7 +12,7 @@ public class Flashlight : Item
     {
         itemName = "Flashlight";
         description = "It will brighten the building";
-        image = Resources.Load<Texture2D>("Texture/Key");
+        image = Resources.Load<Texture2D>("Texture/Flashlight");
 
         plr = GameObject.FindWithTag("Player");
         

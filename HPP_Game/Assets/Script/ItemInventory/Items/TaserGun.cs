@@ -32,7 +32,7 @@ public class TaserGun : Item
 
         if (aimUi.style.display == DisplayStyle.Flex)
         {
-            Vector3 worldPos = Input.mousePosition * (1080 / Screen.height);
+            Vector3 worldPos = Input.mousePosition * (1080f / Screen.height);
             aimUi.style.left = worldPos.x - (aimUi.layout.width / 2);
             aimUi.style.top = (1080 - worldPos.y) - 30;
         }

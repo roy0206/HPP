@@ -19,7 +19,8 @@ public class PoolManager : MonoBehaviour
 
     public List<PoolInfo> poolObjects = new List<PoolInfo>();
 
-    Dictionary<string, (GameObject, GameObject)> poolStorage = new Dictionary<string, (GameObject, GameObject)>();
+    Dictionary<string, (GameObject, GameObject)> poolStorage 
+        = new Dictionary<string, (GameObject, GameObject)>();
 
     private void Awake()
     {
@@ -39,9 +40,8 @@ public class PoolManager : MonoBehaviour
 
     private GameObject MakeNewPool(GameObject obj)
     {
-        GameObject clone = Instantiate(obj,
-            Vector3.zero,
-            Quaternion.identity,
+        GameObject clone 
+            = Instantiate(obj, Vector3.zero, Quaternion.identity,
             poolStorage[obj.name].Item1.transform);
         clone.name = obj.name;
         clone.SetActive(false);
