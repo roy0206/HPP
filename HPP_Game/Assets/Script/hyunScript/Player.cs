@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class Player : MonoBehaviour
     private Animator myAnim;
     public PlayerState PlayerStates = new PlayerState();
     private Table table;
+    int DieDelay=0;
+    
 
 
 
@@ -22,7 +25,7 @@ public class Player : MonoBehaviour
     private void Update()
     {
         SetIsSit();
-
+        
 
         if (Input.GetKeyDown(KeyCode.Space) && PlayerStates.IsSit)
         {
@@ -42,20 +45,21 @@ public class Player : MonoBehaviour
     {
         Move();
         MoveAnim();
-       
 
-        
+        IsPlayerDie();
+
+
     }
 
     private void Move()
     {
 
         rb.velocity = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized * Time.deltaTime * MoveSpeed ;
-        //float hor = input.getaxisraw("horizontal");
-        //float var = input.getaxisraw("vertical");
-        //vector3 movevector = new vector3(hor, var).normalized;
-        //transform.position += movespeed * movevector * time.deltatime;
-        //debug.log(rb.velocity);
+        //////float hor = input.getaxisraw("horizontal");
+        //////float var = input.getaxisraw("vertical");
+        //////vector3 movevector = new vector3(hor, var).normalized;
+        //////transform.position += movespeed * movevector * time.deltatime;
+        //////debug.log(rb.velocity);
 
     }
     public void SetSit()
@@ -69,9 +73,23 @@ public class Player : MonoBehaviour
         {
             MoveSpeed = 0f;
             transform.position = table.transform.position;
+            
         }
 
           
+    }
+    private void IsPlayerDie()
+    {
+        if(PlayerStates.PlayerDie == true)
+        {
+            myAnim.SetBool("Die",true);
+            MoveSpeed = 0f;
+            DieDelay += 1;
+            if(DieDelay == 120)
+            {
+                SceneManager.LoadScene("EndScene");
+            }
+        }
     }
     
 
@@ -85,6 +103,13 @@ public class Player : MonoBehaviour
             myAnim.SetFloat("LastY", Input.GetAxisRaw("Vertical"));
         }
     }
-    
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.collider.CompareTag("Enemy"))
+        {
+            PlayerStates.PlayerDie = true;
+        }
+    }
+
 
 }
